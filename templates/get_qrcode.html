@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <title>QRCODE</title>
 </head>
+<style>
+    img{
+    display:flex;
+    margin-left:450px;
+    flex-direction:column;
+
+    }
+    a{
+    display:flex;
+    margin-left:400px;
+    padding-top:100px;
+    }
+</style>
 <body>
 <img src="data:image/png;base64,{{ img_str }}" alt="QR-код" >
 <a href="{% url 'get_product' qrcode_model.qr_code_uuid %}"> {{ data }} </a>

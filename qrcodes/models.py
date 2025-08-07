@@ -6,5 +6,3 @@ class QRcode(models.Model):
     product_id = models.IntegerField(null=False)
     product_name = models.CharField()
 
-    class Meta:
-        get_latest_by = 'qr_code_uuid'

@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>QRCODE</title>
-</head>
+{% extends "base.html "%}
 <body>
-<form method="post">
+{% block content %}
+<form method="post" class="custom-form">
     {% csrf_token%}
     {{ form.as_p}}
-    <button type="submit"> Сгенерировать </button>
+   <a> <button type="submit"> Сгенерировать </button></a>
 </form>
-
+{% endblock %}
 </body>
 
-</html>

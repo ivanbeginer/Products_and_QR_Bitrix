@@ -49,7 +49,7 @@ def create_product(request):
             return render(request,'success.html')
         else:
             form = ProductCreateForm()
-    return render(request,'product.html',locals())
+    return render(request,'base.html',locals())
 
 
 def get_product(request,qr_uuid):

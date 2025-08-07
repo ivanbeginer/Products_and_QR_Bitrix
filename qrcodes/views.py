@@ -25,24 +25,27 @@ def create_qrcode(request):
             try:
                 creation = user.call_api_method('catalog.product.get',params={'id':data_form['product_id']})['result']['product']
                 print(creation)
-                key = uuid.uuid4()
 
-                QRCODE.objects.update_or_create(product_id=data_form['product_id'],defaults={'qr_code_uuid':key,'product_name':creation['name']})
+                if len(QRCODE.objects.filter(product_id=creation['id']))>0:
 
+                    QRCODE.objects.update(product_id=creation['id'],qr_code_uuid=uuid.uuid4(),product_name=creation['name'])
+                else:
 
+                    QRCODE.objects.create(product_id=creation['id'],qr_code_uuid=uuid.uuid4(),product_name=creation['name'])
+                qrcode = QRCODE.objects.filter(product_id=creation['id']).first()
+                qrcode.refresh_from_db()
+                return redirect('get_qrcode', f'{creation['id']}')
             except BitrixApiError:
 
                 return render(request,'error.html')
 
-
-            return  redirect('get_qrcode',f'{creation['id']}')
     return render(request,'create_qrcode.html',locals())
 
 
 @main_auth(on_cookies=True)
 def get_qrcode(request,product_id):
 
-    qrcode_model = QRCODE.objects.filter(product_id=product_id).latest('qr_code_uuid')
+    qrcode_model = QRCODE.objects.filter(product_id=product_id).first()
     data = f'http://localhost:8000/get_product/{qrcode_model.qr_code_uuid}/'
 
     qr = qrcode.QRCode(version=1,
